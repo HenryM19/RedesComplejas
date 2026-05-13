@@ -1,0 +1,395 @@
+%=============================================================
+%  Plantilla UCUENCA – Configuración de formato
+%  Universidad de Cuenca · Facultad de Ingeniería
+%  Ing. Henry Maldonado
+%  Diseño basado en el Libro de Marca UCUENCA
+%=============================================================
+
+%-------------------------------------------------------------
+% ENCODING & LANGUAGE
+%-------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{babel}
+\usepackage{comment}
+\usepackage{ifthen}
+\newboolean{showdetails}
+\babelprovide[import,main]{spanish}
+
+%-------------------------------------------------------------
+% FONTS
+% FiraSans (humanista sans, acorde al Libro de Marca UCUENCA)
+%-------------------------------------------------------------
+\usepackage[sfdefault,light]{FiraSans}
+\usepackage{FiraMono}
+\usepackage{microtype}
+
+%-------------------------------------------------------------
+% PAGE LAYOUT
+%-------------------------------------------------------------
+\usepackage[top=2.8cm, bottom=2.8cm, left=3cm, right=2.5cm,
+            headheight=16pt]{geometry}
+
+%-------------------------------------------------------------
+% GRAPHICS & COLOR
+%-------------------------------------------------------------
+\usepackage{graphicx}
+\usepackage[dvipsnames,table]{xcolor}
+
+%-------------------------------------------------------------
+% BRAND COLORS  (Libro de Marca UCUENCA, pp. 26-27)
+%-------------------------------------------------------------
+\definecolor{UCblue}{RGB}{0,40,86}
+\definecolor{UCred}{RGB}{165,16,8}
+\definecolor{UCgris}{RGB}{111,111,111}
+\definecolor{UCbluelight}{RGB}{230,236,244}
+\definecolor{UCbluemid}{RGB}{0,62,126}
+\definecolor{codebg}{RGB}{248,248,248}
+\definecolor{infoboxbg}{RGB}{232,240,252}
+\definecolor{successgreen}{RGB}{39,174,96}
+\definecolor{warnyellow}{RGB}{241,196,15}
+
+%-------------------------------------------------------------
+% COLORES DE CÓDIGO
+%-------------------------------------------------------------
+\definecolor{arduino}{HTML}{00A3A9}
+\definecolor{astructure}{HTML}{818A42}
+\definecolor{avariables}{HTML}{128F8F}
+\definecolor{afunctions}{HTML}{DB6B21}
+\definecolor{aback}{HTML}{E0E0E2}
+\definecolor{amyblue}{rgb}{0.01,0.61,0.98}
+\definecolor{amygray}{rgb}{0.47,0.47,0.33}
+\definecolor{numb}{rgb}{0.7,0.0,0.7}
+\definecolor{punct}{rgb}{0.5,0.5,0.5}
+\definecolor{delim}{rgb}{0.3,0.3,0.3}
+
+%-------------------------------------------------------------
+% TABLES
+%-------------------------------------------------------------
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{xltabular}
+
+%-------------------------------------------------------------
+% HEADERS & FOOTERS
+%-------------------------------------------------------------
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+%-------------------------------------------------------------
+% LISTS
+%-------------------------------------------------------------
+\usepackage{enumitem}
+\newcommand{\keys}[1]{%
+  {\small\normalfont\sffamily\fboxsep=2pt\fbox{\vphantom{Xy}#1}}}
+\newcommand{\ctrl}{Ctrl}
+\newcommand{\alt}{Alt}
+\newcommand{\shift}{Shift}
+
+%-------------------------------------------------------------
+% CODE LISTINGS
+%-------------------------------------------------------------
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings, skins, breakable}
+
+%-------------------------------------------------------------
+% MATH
+%-------------------------------------------------------------
+\usepackage{amsmath,amssymb}
+
+%-------------------------------------------------------------
+% HYPERLINKS
+%-------------------------------------------------------------
+\usepackage[colorlinks=true,
+            linkcolor=UCblue,
+            urlcolor=UCblue,
+            citecolor=UCblue,
+            bookmarks=true,
+            unicode=true,
+            pdftitle={Documento},
+            pdfauthor={Ing. Henry Maldonado}]{hyperref}
+
+%-------------------------------------------------------------
+% BIBLIOGRAPHY
+%-------------------------------------------------------------
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{references.bib}
+
+%-------------------------------------------------------------
+% MISC
+%-------------------------------------------------------------
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{mdframed}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{pifont}
+\usepackage{fontawesome5}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning,shadows,
+                fit,backgrounds,calc,shapes,arrows}
+\usepackage{comment}
+\usepackage[american]{circuitikz}
+\usetikzlibrary{arrows.meta, calc, positioning}
+\usetikzlibrary{shapes,arrows,positioning}
+\usetikzlibrary{positioning}
+
+%=============================================================
+%  ESTILO DE LISTADOS DE CÓDIGO
+%=============================================================
+\newcommand*{\FormatDigit}[1]{\ttfamily\textcolor{black}{#1}}
+\lstdefinestyle{FormattedNumber}{%
+    literate=*{0}{{\FormatDigit{0}}}{1}%
+             {1}{{\FormatDigit{1}}}{1}%
+             {2}{{\FormatDigit{2}}}{1}%
+             {3}{{\FormatDigit{3}}}{1}%
+             {4}{{\FormatDigit{4}}}{1}%
+             {5}{{\FormatDigit{5}}}{1}%
+             {6}{{\FormatDigit{6}}}{1}%
+             {7}{{\FormatDigit{7}}}{1}%
+             {8}{{\FormatDigit{8}}}{1}%
+             {9}{{\FormatDigit{9}}}{1}%
+             {.0}{{\FormatDigit{.0}}}{2}%
+             {.1}{{\FormatDigit{.1}}}{2}%
+             {.2}{{\FormatDigit{.2}}}{2}%
+             {.3}{{\FormatDigit{.3}}}{2}%
+             {.4}{{\FormatDigit{.4}}}{2}%
+             {.5}{{\FormatDigit{.5}}}{2}%
+             {.6}{{\FormatDigit{.6}}}{2}%
+             {.7}{{\FormatDigit{.7}}}{2}%
+             {.8}{{\FormatDigit{.8}}}{2}%
+             {.9}{{\FormatDigit{.9}}}{2}%
+             {\ }{{ }}{1},%
+}
+
+\lstset{%
+  basicstyle=\footnotesize\ttfamily,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  commentstyle=\color{UCgris},
+  deletekeywords={...},
+  escapeinside={\%*}{*)},
+  extendedchars=true,
+  keepspaces=true,
+  keywordstyle=[1]\color{astructure},
+  keywordstyle=[2]\color{avariables},
+  keywordstyle=[3]\color{afunctions},
+  keywordstyle=[4]\bfseries\color{afunctions},
+  language=c++,
+  morekeywords={*,...},
+  numbers=left,
+  numbersep=5pt,
+  numberstyle=\tiny\color{amygray},
+  rulecolor=\color{black},
+  rulesepcolor=\color{amyblue},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=2,
+  title=\lstname,
+  emphstyle=\color{avariables},
+  frame=single,
+  framexleftmargin=15pt,
+  rulecolor=\color{arduino},
+  literate=%
+    {á}{{\'{a}}}1 {é}{{\'{e}}}1 {í}{{\'{i}}}1 {ó}{{\'{o}}}1 {ú}{{\'{u}}}1
+    {Á}{{\'{A}}}1 {É}{{\'{E}}}1 {Í}{{\'{I}}}1 {Ó}{{\'{O}}}1 {Ú}{{\'{U}}}1
+    {ñ}{{\~{n}}}1 {Ñ}{{\~{N}}}1
+}
+
+\lstdefinestyle{Arduino}{%
+    style=FormattedNumber,
+    keywords={setup, loop, if, else, for, switch, while, do, break, continue, return, goto},
+    morekeywords=[2]{HIGH, LOW, INPUT, OUTPUT, INPUT_PULLUP, LED_BUILTIN, true, false,
+                     int, float, void, boolean, char, word, long, short, double, string, array},
+    morekeywords=[3]{const, pinMode, digitalWrite, digitalRead, analogReference, analogRead,
+                     analogWrite, analogReadResolution, analogWriteResolution, tone, noTone,
+                     shiftOut, shiftIn, pulseIn, millis, micros, delay, delayMicroseconds,
+                     min, max, abs, constrain, map, pow, sqrt, sin, cos, tan, randomSeed,
+                     random, lowByte, highByte, bitRead, bitWrite, bitSet, bitClear, bit,
+                     attachInterrupt, detachInterrupt, interrupts, noInterrupts,
+                     Stream, Keyboard, Mouse, begin, println, print},
+    morekeywords=[4]{Serial},
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/},
+    emph={const},
+}
+
+% Entorno para bloques de código Arduino
+\newtcblisting{ArduinoSketchBox}[2][]{
+  colframe=arduino,
+  enhanced, drop shadow, sharp corners, boxrule=1pt,
+  width=\dimexpr\linewidth+\parindent\relax,
+  left skip=-\parindent,
+  arc=3pt, outer arc=3pt,
+  listing only,
+  listing options={
+    frame=,
+    style=Arduino,
+  },
+  title=#2,
+  #1
+}
+
+% Enlace externo (ícono)
+\newcommand{\ExternalLink}{%
+    \tikz[x=1.2ex, y=1.2ex, baseline=-0.05ex]{%
+        \begin{scope}[x=1ex, y=1ex]
+            \clip (-0.1,-0.1)
+                --++ (-0, 1.2)
+                --++ (0.6, 0)
+                --++ (0, -0.6)
+                --++ (0.6, 0)
+                --++ (0, -1);
+            \path[draw,
+                line width = 0.5,
+                rounded corners=0.5]
+                (0,0) rectangle (1,1);
+        \end{scope}
+        \path[draw, line width = 0.5] (0.5, 0.5) -- (1, 1);
+        \path[draw, line width = 0.5] (0.6, 1) -- (1, 1) -- (1, 0.6);
+        }
+    }
+
+\newcommand{\doclink}[2]{\href{#1}{#2}\footnote{\url{#1}}}
+
+%=============================================================
+%  TCOLORBOX STYLES (plantilla UCUENCA)
+%=============================================================
+\newtcolorbox{objetivebox}{
+  enhanced, breakable,
+  colback=UCbluelight,
+  colframe=UCblue,
+  fonttitle=\bfseries\small\color{white},
+  title={\faBookOpen\hspace{5pt}Objetivos de Aprendizaje},
+  arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  boxrule=0pt, titlerule=0pt,
+  attach boxed title to top left={yshift=-2pt,xshift=0pt},
+  boxed title style={colback=UCblue, arc=2pt, boxrule=0pt},
+}
+
+\newtcolorbox{materialbox}{
+  enhanced, breakable,
+  colback=white,
+  colframe=UCred,
+  fonttitle=\bfseries\small\color{white},
+  title={\faTools\hspace{5pt}Materiales y Equipos},
+  arc=2pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  boxrule=0pt,
+  attach boxed title to top left={yshift=-2pt},
+  boxed title style={colback=UCred, arc=2pt, boxrule=0pt},
+}
+
+\newtcolorbox{infobox}[1][Nota]{
+  enhanced, breakable,
+  colback=infoboxbg,
+  colframe=UCblue,
+  fonttitle=\bfseries\small,
+  title={\faInfoCircle\hspace{5pt}#1},
+  arc=2pt, boxrule=0.6pt,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+}
+
+\newtcolorbox{warningbox}[1][Advertencia]{
+  enhanced, breakable,
+  colback=warnyellow!15,
+  colframe=warnyellow!70!black,
+  fonttitle=\bfseries\small,
+  title={\faExclamationTriangle\hspace{5pt}#1},
+  arc=2pt, boxrule=0.6pt,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+}
+
+\newtcolorbox{entregabox}{
+  enhanced, breakable,
+  colback=successgreen!8,
+  colframe=successgreen!70!black,
+  fonttitle=\bfseries\small\color{white},
+  title={\faClipboardCheck\hspace{5pt}Entregables},
+  arc=2pt, boxrule=0pt,
+  attach boxed title to top left={yshift=-2pt},
+  boxed title style={colback=successgreen!70!black, arc=2pt, boxrule=0pt},
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+}
+
+\newtcolorbox{exercisebox}{
+	enhanced, breakable,
+	colback=UCblue!8,
+	colframe=UCblue,
+	fonttitle=\bfseries\small\color{white},
+	title={\faDumbbell\hspace{5pt}Ejercicio},
+	arc=2pt,
+	left=8pt, right=8pt, top=6pt, bottom=6pt,
+	boxrule=0pt,
+	attach boxed title to top left={yshift=-2pt},
+	boxed title style={colback=UCblue, arc=2pt, boxrule=0pt},
+}
+
+%=============================================================
+%  CHAPTER & SECTION FORMATTING  (estilo Libro de Marca)
+%=============================================================
+\titleformat{\chapter}[display]
+  {\normalfont\LARGE\bfseries\color{UCblue}}
+  {\color{UCred}\large\bfseries\chaptername\ \thechapter}
+  {4pt}
+  {}
+  [{\color{UCblue}\vspace{-4pt}\rule{\linewidth}{2pt}}]
+\titlespacing*{\chapter}{0pt}{-20pt}{28pt}
+
+\titleformat{\section}
+  {\normalfont\large\bfseries\color{UCblue}}
+  {\thesection}{1em}{}
+  [{\color{UCred}\vspace{1pt}\rule{\linewidth}{1.5pt}}]
+
+\titleformat{\subsection}
+  {\normalfont\normalsize\bfseries\color{UCred}}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{UCblue}}
+  {\thesubsubsection}{1em}{}
+
+%=============================================================
+%  HEADER / FOOTER  (estilo Libro de Marca UCUENCA)
+%=============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{%
+  \footnotesize\bfseries\color{UCred}\MakeUppercase{Título del Documento}}
+\fancyhead[R]{%
+  \footnotesize\bfseries\color{UCblue}\MakeUppercase{Universidad de Cuenca}}
+\fancyfoot[R]{\small\color{UCgris}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[R]{\small\color{UCgris}\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+
+%=============================================================
+%  MACROS DE UTILIDAD
+%=============================================================
+\newcommand{\pinref}[1]{\texttt{#1}}
+\newcommand{\comp}[1]{\textbf{#1}}
+\newcommand{\career}{Ingeniería en Telecomunicaciones}
+
+% Tikz settings para diagramas de control
+\tikzset{
+  block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+  tmp/.style  = {coordinate},
+  sum/.style  = {draw, fill=white, circle, node distance=1cm},
+  input/.style = {coordinate},
+  output/.style= {coordinate},
+  pinstyle/.style = {pin edge={to-,thin,black}}
+}

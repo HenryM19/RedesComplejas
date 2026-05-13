@@ -1,0 +1,62 @@
+%=============================================================
+%  Portada  (estilo Libro de Marca UCUENCA)
+%  Personalizar: TITULO_DOCUMENTO, SUBTITULO, PERIODO, AUTOR
+%=============================================================
+\pagestyle{empty}
+
+\begin{titlepage}
+  \thispagestyle{empty}
+  \pagecolor{UCblue}
+  \color{white}
+
+  \begin{tikzpicture}[remember picture, overlay]
+    % Franja roja superior
+    \fill[UCred] ([yshift=-3.8cm]current page.north west)
+      rectangle ([yshift=-4.2cm]current page.north east);
+    % Franja roja inferior
+    \fill[UCred] ([yshift=3.6cm]current page.south west)
+      rectangle ([yshift=3.2cm]current page.south east);
+  \end{tikzpicture}
+
+  % Cabecera UCUENCA
+  \vspace*{0.9cm}
+  \begin{flushleft}
+    {\fontsize{42}{46}\selectfont\bfseries
+      \textcolor{white}{U}\textcolor{white}{CUENCA}}\\[-6pt]
+    {\color{UCred}\rule{0.52\linewidth}{3pt}}\\[4pt]
+    {\small\bfseries\color{white!80!UCblue}\MakeUppercase{Ingeniería}}\\[2pt]
+    {\fontsize{7}{8}\selectfont\bfseries\color{white!60!UCblue}%
+      \MakeUppercase{Facultad de Ingeniería}}
+  \end{flushleft}
+
+  \vspace{3.8cm}
+
+  % Título principal — EDITAR AQUÍ
+  \begin{flushleft}
+    {\fontsize{10}{12}\selectfont\bfseries\color{white!70!UCblue}%
+      \MakeUppercase{Período AAAA · Mes AAAA -- Mes AAAA}}\\[14pt]
+    {\fontsize{38}{44}\selectfont\bfseries\color{white}%
+      Título del\\[4pt]Documento}\\[10pt]
+    {\fontsize{22}{26}\selectfont\bfseries\color{white!85!UCblue}%
+      Subtítulo o Asignatura}\\[6pt]
+  \end{flushleft}
+
+  \vfill
+
+  % Autor — EDITAR AQUÍ
+  \begin{flushleft}
+    {\color{UCred}\rule{0.4\linewidth}{1pt}}\\[8pt]
+    {\normalsize\bfseries\color{white}%
+      Ing.\ Henry Maldonado}\\[4pt]
+    {\small\color{white!70!UCblue}%
+      Departamento de Ingeniería Eléctrica, Electrónica y Telecomunicaciones}\\[16pt]
+    {\footnotesize\color{white!50!UCblue}%
+      Cuenca\,--\,Ecuador \quad \the\year}
+  \end{flushleft}
+
+  \vspace{0.6cm}
+\end{titlepage}
+
+% Restaurar color de página
+\pagecolor{white}\color{black}
+\pagestyle{fancy}

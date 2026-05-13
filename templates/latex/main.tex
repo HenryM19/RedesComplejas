@@ -1,0 +1,40 @@
+%=============================================================
+%  Título del Documento
+%  Universidad de Cuenca · Facultad de Ingeniería
+%  Ing. Henry Maldonado
+%=============================================================
+\documentclass[12pt,a4paper,oneside,openany]{book}
+% Evitar páginas en blanco que book inserta entre partes
+\let\cleardoublepage=\clearpage
+
+\input{Template/Template}
+
+%===================================================
+%  DOCUMENT
+%===================================================
+\begin{document}
+
+\input{Template/Portada}
+
+\setboolean{showdetails}{true}
+
+%-------------------------------------------------------------
+%  TABLA DE CONTENIDOS
+%-------------------------------------------------------------
+\tableofcontents
+\clearpage
+
+%=============================================================
+%  CONTENIDO
+%  Descomentar e incluir los archivos .tex de cada capítulo
+%=============================================================
+% \input{capitulo1.tex}
+% \input{capitulo2.tex}
+
+%-------------------------------------------------------------
+%  BIBLIOGRAFÍA
+%-------------------------------------------------------------
+\newpage
+\printbibliography
+
+\end{document}
