@@ -203,7 +203,7 @@ def guardar_imagen(
         archivo_origen, carpeta_destino, mover=mover, agregar_timestamp=agregar_timestamp
     )
 
-    print(f"[✔] Imagen guardada en: {ruta_guardada}")
+    print(f"[OK] Imagen guardada en: {ruta_guardada}")
     return ruta_guardada
 
 
@@ -253,7 +253,7 @@ def guardar_informe(
         archivo_origen, carpeta_destino, mover=mover, agregar_timestamp=agregar_timestamp
     )
 
-    print(f"[✔] Informe guardado en: {ruta_guardada}")
+    print(f"[OK] Informe guardado en: {ruta_guardada}")
     return ruta_guardada
 
 
@@ -303,7 +303,7 @@ def guardar_md(
         archivo_origen, carpeta_destino, mover=mover, agregar_timestamp=agregar_timestamp
     )
 
-    print(f"[✔] Documento Markdown guardado en: {ruta_guardada}")
+    print(f"[OK] Documento Markdown guardado en: {ruta_guardada}")
     return ruta_guardada
 
 
@@ -341,9 +341,9 @@ def crear_estructura_resultados(
         "md"       : _crear_carpeta(base / CARPETA_MD),
     }
 
-    print(f"[✔] Estructura de resultados creada en: {base}")
+    print(f"[OK] Estructura de resultados creada en: {base}")
     for clave, ruta in rutas.items():
-        print(f"    [{clave}] → {ruta}")
+        print(f"    [{clave}] -> {ruta}")
 
     return rutas
 
@@ -405,7 +405,7 @@ if __name__ == "__main__":
     import tempfile
 
     print("=" * 60)
-    print("  funciones_template.py — Demostración de uso")
+    print("  resultados.py - Demostracion de uso")
     print("=" * 60)
 
     # Usamos un directorio temporal para la demo sin ensuciar el proyecto

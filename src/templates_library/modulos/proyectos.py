@@ -46,6 +46,8 @@ from pathlib import Path
 from typing import Optional
 from uuid import uuid4
 
+from templates_library.utils.recursos import obtener_directorio_templates
+
 
 # =============================================================================
 # Definición de constantes — Directorio de plantillas
@@ -53,7 +55,7 @@ from uuid import uuid4
 
 # Directorio donde viven las plantillas de cada tipo de proyecto.
 # Se ubica junto a este mismo script para portabilidad.
-DIR_TEMPLATES: Path = Path(__file__).parent.parent / "templates"
+DIR_TEMPLATES: Path = obtener_directorio_templates()
 
 # Default project type
 TIPO_POR_DEFECTO: str = "python"
@@ -134,7 +136,7 @@ TIPOS_PROYECTO: dict[str, dict] = {
             "Template",
         ],
         "archivos_texto": {},    # Todo viene del directorio_plantilla
-        "directorio_plantilla": "latex",
+        "directorio_plantilla": "latex_report",
     },
 
     # ------------------------------------------------------------------
@@ -356,10 +358,10 @@ def copiar_directorio_plantilla(origen: Path, destino: Path, verbose: bool) -> N
         if not archivo_destino.exists():
             shutil.copy2(str(archivo_origen), str(archivo_destino))
             if verbose:
-                print(f"  ✔  {ruta_relativa}")
+                print(f"  [OK]    {ruta_relativa}")
         else:
             if verbose:
-                print(f"  ·  {ruta_relativa}  (ya existe, omitido)")
+                print(f"  [INFO]  {ruta_relativa}  (ya existe, omitido)")
 
 
 def generar_readme(nombre_proyecto: str, tipo: str) -> str:
@@ -573,7 +575,7 @@ def crear_proyecto(
     for carpeta_rel in plantilla["carpetas"]:
         crear_carpeta(ruta_proyecto / carpeta_rel)
         if verbose:
-            print(f"  ✔  {carpeta_rel}/")
+            print(f"  [OK]    {carpeta_rel}/")
 
     # --- Archivos del directorio plantilla ---
     dir_plantilla_nombre = plantilla.get("directorio_plantilla")
@@ -596,7 +598,7 @@ def crear_proyecto(
         crear_archivo_texto(ruta_archivo, contenido)
 
         if verbose:
-            estado = "✔" if ruta_archivo.exists() else "✖"
+            estado = "[OK]" if ruta_archivo.exists() else "[ERROR]"
             print(f"  {estado}  {archivo_rel}")
 
     # --- Resumen ---
@@ -728,22 +730,36 @@ def configurar_parser() -> argparse.ArgumentParser:
 # Código main — Punto de entrada del script
 # =============================================================================
 
-if __name__ == "__main__":
+def main(argv: Optional[list[str]] = None) -> int:
+    """
+    Ejecuta la interfaz de línea de comandos para crear proyectos.
+
+    Funcionalidad:
+        Parsea argumentos de terminal, lista tipos disponibles cuando se
+        solicita y crea la estructura del proyecto seleccionado.
+
+    Argumentos:
+        argv (Optional[list[str]]): Lista de argumentos para pruebas. Si es
+                                    None, argparse usa sys.argv.
+
+    Salidas:
+        int: Código de salida del proceso.
+    """
 
     # Parsear argumentos de línea de comandos
     parser = configurar_parser()
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     # Mostrar tipos y salir si se solicitó
     if getattr(args, "list_type"):
         listar_tipos_disponibles()
-        sys.exit(0)
+        return 0
 
     # Verificar que se proporcionó el nombre
     if not getattr(args, "nombre"):
         parser.print_help()
         print("\n[ERROR] Debes proporcionar el nombre del proyecto.")
-        sys.exit(1)
+        return 1
 
     # Resolver directorio base si se especificó
     directorio_base = Path(getattr(args, "2route")).resolve() if getattr(args, "2route") else None
@@ -756,8 +772,12 @@ if __name__ == "__main__":
             directorio_base=directorio_base,
             verbose=not getattr(args, "quiet"),
         )
-        sys.exit(0)
+        return 0
 
     except (ValueError, FileNotFoundError, PermissionError) as e:
         print(f"\n[ERROR] {e}")
-        sys.exit(1)
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

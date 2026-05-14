@@ -4,61 +4,45 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
-*.egg
-*.egg-info/
-dist/
-build/
-eggs/
-parts/
-var/
-sdist/
-develop-eggs/
-.installed.cfg
-lib/
-lib64/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
 
-# Entornos virtuales
-.env
-.venv
-env/
+# Entornos
+.venv/
 venv/
-ENV/
-
-# Variables de entorno
+env/
 .env
-*.env.local
 
-# LaTeX compilación
-*.aux
-*.log
-*.out
-*.toc
-*.synctex.gz
-*.fls
-*.fdb_latexmk
-*.bbl
-*.blg
-*.bcf
-*.run.xml
+# Build
+build/
+dist/
+*.egg-info/
 
-# Editores
-.vscode/
+# IDE
 .idea/
-*.swp
-*.swo
-*~
+.vscode/
 
-# macOS
+# Sistema
 .DS_Store
-.AppleDouble
-.LSOverride
-
-# Windows
 Thumbs.db
-ehthumbs.db
-Desktop.ini
 
-# Resultados generados (carpetas de trabajo)
+# Resultados generados por la librería
 Resultados_imagenes/
 Resultados_informes/
 Resultados_md/
+
+# LaTeX
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fls
+*.fdb_latexmk
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc

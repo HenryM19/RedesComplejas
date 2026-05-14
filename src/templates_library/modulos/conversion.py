@@ -38,16 +38,18 @@ import subprocess
 from pathlib import Path
 from typing import Optional
 
+from templates_library.utils.recursos import obtener_directorio_templates
+
 
 # =============================================================================
 # Definición de constantes
 # =============================================================================
 
 # Directorio de templates, relativo a este script
-DIR_TEMPLATES: Path = Path(__file__).parent.parent / 'templates'
+DIR_TEMPLATES: Path = obtener_directorio_templates()
 
 # Subcarpeta de la plantilla LaTeX dentro de DIR_TEMPLATES
-DIR_TEMPLATE_LATEX: Path = DIR_TEMPLATES / 'latex'
+DIR_TEMPLATE_LATEX: Path = DIR_TEMPLATES / 'latex_report'
 
 # Expresiones regulares
 RE_FRONTMATTER  = re.compile(r'^---[ \t]*\n(.*?)\n---[ \t]*\n', re.DOTALL)
@@ -218,7 +220,7 @@ class ConversorMdLatex:
         ])
 
         self.ruta_salida.write_text(contenido, encoding='utf-8')
-        print(f'[✔] LaTeX generado  : {self.ruta_salida}')
+        print(f'[OK] LaTeX generado  : {self.ruta_salida}')
 
         if self.compilar:
             self._compilar_pdf()
@@ -234,7 +236,7 @@ class ConversorMdLatex:
         Crea en el directorio de salida la estructura necesaria para compilar el .tex.
 
         Funcionalidad:
-            Copia Template/ desde templates/latex/Template/ si no existe en el
+            Copia Template/ desde templates/latex_report/Template/ si no existe en el
             directorio de salida. Crea images/ si no existe. Copia references.bib
             si no existe. Informa de cada acción realizada en consola.
             Si templates/ no se encuentra, advierte pero no aborta.
@@ -254,20 +256,20 @@ class ConversorMdLatex:
         if not destino_template.exists():
             if origen_template.exists():
                 shutil.copytree(str(origen_template), str(destino_template))
-                print(f'[✔] Template copiado : {destino_template}')
+                print(f'[OK] Template copiado : {destino_template}')
             else:
                 print(f'[!] No se encontró la plantilla en: {origen_template}')
-                print(f'    Asegúrate de que templates/latex/Template/ esté junto a md_a_latex.py')
+                print(f'    Asegúrate de que templates/latex_report/Template/ esté instalado en el paquete.')
         else:
-            print(f'[·] Template ya existe: {destino_template}')
+            print(f'[INFO] Template ya existe: {destino_template}')
 
         # --- images/ ---
         dir_images = dir_salida / 'images'
         if not dir_images.exists():
             dir_images.mkdir(parents=True)
-            print(f'[✔] Carpeta creada   : {dir_images}')
+            print(f'[OK] Carpeta creada   : {dir_images}')
         else:
-            print(f'[·] images/ ya existe: {dir_images}')
+            print(f'[INFO] images/ ya existe: {dir_images}')
 
         # --- references.bib ---
         origen_bib  = DIR_TEMPLATE_LATEX / 'references.bib'
@@ -276,15 +278,15 @@ class ConversorMdLatex:
         if not destino_bib.exists():
             if origen_bib.exists():
                 shutil.copy2(str(origen_bib), str(destino_bib))
-                print(f'[✔] Bib copiado      : {destino_bib}')
+                print(f'[OK] Bib copiado      : {destino_bib}')
             else:
                 destino_bib.write_text(
                     '% references.bib — Agregar referencias en formato BibTeX\n',
                     encoding='utf-8'
                 )
-                print(f'[✔] Bib creado vacío : {destino_bib}')
+                print(f'[OK] Bib creado vacio : {destino_bib}')
         else:
-            print(f'[·] references.bib ya existe')
+            print(f'[INFO] references.bib ya existe')
 
     # ------------------------------------------------------------------
     # Parseo de frontmatter YAML
@@ -743,14 +745,14 @@ class ConversorMdLatex:
             print('[!] No se encontró latexmk ni pdflatex. Instala TeX Live o MiKTeX.')
             return
 
-        print(f'[→] Compilando con {herramienta}...')
+        print(f'[INFO] Compilando con {herramienta}...')
         res = subprocess.run(cmd, cwd=str(cwd), capture_output=True, text=True)
 
         pdf = self.ruta_salida.with_suffix('.pdf')
         if res.returncode == 0 and pdf.exists():
-            print(f'[✔] PDF generado    : {pdf}')
+            print(f'[OK] PDF generado    : {pdf}')
         else:
-            print(f'[✖] Error al compilar. Últimas líneas del log:')
+            print(f'[ERROR] Error al compilar. Ultimas lineas del log:')
             print(res.stdout[-600:])
 
 
@@ -795,16 +797,30 @@ def configurar_parser() -> argparse.ArgumentParser:
 # Código main — Punto de entrada
 # =============================================================================
 
-if __name__ == '__main__':
+def main(argv: Optional[list[str]] = None) -> int:
+    """
+    Ejecuta la interfaz de línea de comandos para convertir Markdown a LaTeX.
+
+    Funcionalidad:
+        Parsea argumentos de terminal, valida el archivo de entrada, ejecuta
+        la conversión y retorna un código de salida para scripts.
+
+    Argumentos:
+        argv (Optional[list[str]]): Lista de argumentos para pruebas. Si es
+                                    None, argparse usa sys.argv.
+
+    Salidas:
+        int: Código de salida del proceso.
+    """
 
     parser = configurar_parser()
-    args   = parser.parse_args()
+    args   = parser.parse_args(argv)
 
     ruta_entrada = Path(args.entrada)
 
     if not ruta_entrada.exists():
         print(f'[ERROR] El archivo "{ruta_entrada}" no existe.')
-        sys.exit(1)
+        return 1
 
     if ruta_entrada.suffix.lower() != '.md':
         print(f'[AVISO] El archivo no tiene extensión .md.')
@@ -818,7 +834,11 @@ if __name__ == '__main__':
 
     try:
         conversor.convertir()
-        sys.exit(0)
+        return 0
     except Exception as e:
         print(f'[ERROR] {e}')
-        sys.exit(1)
+        return 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())

@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "templates-library"
+version = "0.1.0"
+description = "Herramientas Python para crear proyectos, organizar resultados y convertir Markdown a LaTeX."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Henry Maldonado" }
+]
+keywords = [
+    "templates",
+    "project-generator",
+    "latex",
+    "markdown",
+    "automation",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "build>=1.2",
+    "pytest>=8.0",
+    "ruff>=0.5",
+]
+
+[project.scripts]
+create-project = "templates_library.modulos.proyectos:main"
+crear-proyecto = "templates_library.modulos.proyectos:main"
+md-a-latex = "templates_library.modulos.conversion:main"
+
+[project.urls]
+Homepage = "https://github.com/henrr/Templates_Library"
+Repository = "https://github.com/henrr/Templates_Library"
+Issues = "https://github.com/henrr/Templates_Library/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+templates_library = [
+    "templates/**/*",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
