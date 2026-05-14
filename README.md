@@ -261,6 +261,35 @@ Luego puedes verificar que ya no está disponible:
 python -c "import templates_library"
 ```
 
+## Instrucciones Para IA
+
+Este repositorio incluye plantillas para que Codex, Claude, Copilot u otra IA
+usen `templates_library` como herramienta local en tus otros proyectos.
+
+Están en:
+
+```text
+docs/ai_instructions/
+```
+
+Archivos incluidos:
+
+| Archivo | Uso recomendado |
+|---|---|
+| `AGENTS.template.md` | Copiar como `AGENTS.md` para Codex. |
+| `CLAUDE.template.md` | Copiar como `CLAUDE.md` para Claude / Claude Code. |
+| `copilot-instructions.template.md` | Copiar como `.github/copilot-instructions.md` para GitHub Copilot. |
+| `LOCAL_TOOLS.template.md` | Copiar como `docs/local_tools.md` para documentar herramientas locales. |
+
+Ejemplo:
+
+```powershell
+Copy-Item C:\GitHub\Templates_Library\docs\ai_instructions\AGENTS.template.md .\AGENTS.md
+Copy-Item C:\GitHub\Templates_Library\docs\ai_instructions\CLAUDE.template.md .\CLAUDE.md
+New-Item -ItemType Directory -Force .github
+Copy-Item C:\GitHub\Templates_Library\docs\ai_instructions\copilot-instructions.template.md .\.github\copilot-instructions.md
+```
+
 ## Estructura Técnica
 
 ```text
@@ -278,8 +307,9 @@ Templates_Library/
 |       |   `-- slides_HTML/
 |       `-- utils/
 |           `-- recursos.py
-|-- tests/
 |-- docs/
+|   `-- ai_instructions/
+|-- tests/
 |-- pyproject.toml
 |-- README.md
 |-- CONTRIBUTING.md
