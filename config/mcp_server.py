@@ -521,9 +521,11 @@ if __name__ == "__main__":
     # Obtener puerto de variable de entorno (Render lo proporciona)
     puerto = int(os.getenv("PORT", 8000))
     
-    # Ejecutar servidor con uvicorn
+    # Ejecutar servidor con uvicorn (se pasa el objeto app directamente
+    # para evitar problemas de resolución de módulo cuando se invoca
+    # como 'python config/mcp_server.py' desde la raíz del repositorio)
     uvicorn.run(
-        "mcp_server:app",
+        app,
         host="0.0.0.0",
         port=puerto,
         reload=False,
