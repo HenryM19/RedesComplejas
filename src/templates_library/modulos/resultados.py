@@ -27,7 +27,7 @@ Fecha: 2026-05-12
 # Carga de librerías
 # =============================================================================
 
-import os
+import argparse
 import shutil
 import datetime
 from pathlib import Path
@@ -400,7 +400,7 @@ def listar_resultados(
 # Código main — Demostración de uso de la librería
 # =============================================================================
 
-if __name__ == "__main__":
+def _demo() -> None:
 
     import tempfile
 
@@ -416,7 +416,7 @@ if __name__ == "__main__":
 
         # 1. Crear la estructura de carpetas anticipadamente
         print("-- Paso 1: Crear estructura de resultados --")
-        rutas = crear_estructura_resultados(base_demo)
+        crear_estructura_resultados(base_demo)
 
         # 2. Crear archivos de prueba temporales para simular resultados reales
         print("\n-- Paso 2: Crear archivos de prueba --")
@@ -448,3 +448,239 @@ if __name__ == "__main__":
         listar_resultados(base_demo)
 
     print("\n[DEMO] Finalizada correctamente.")
+
+
+# =============================================================================
+# Configuración CLI
+# =============================================================================
+
+def _agregar_argumentos_archivo(parser: argparse.ArgumentParser) -> None:
+    """
+    Agrega argumentos comunes para comandos que guardan archivos.
+
+    Argumentos:
+        parser (argparse.ArgumentParser): Parser del comando específico.
+
+    Salidas:
+        None
+    """
+    parser.add_argument("archivo_origen", type=str, help="Ruta del archivo a guardar.")
+    parser.add_argument(
+        "--directorio-base",
+        "--base",
+        type=str,
+        default=None,
+        help="Directorio raíz donde se crearán las carpetas de resultados.",
+    )
+    parser.add_argument(
+        "--mover",
+        action="store_true",
+        help="Mueve el archivo en lugar de copiarlo.",
+    )
+    parser.add_argument(
+        "--agregar-timestamp",
+        action="store_true",
+        help="Agrega fecha y hora al nombre del archivo guardado.",
+    )
+
+
+def _directorio_base_desde_args(args: argparse.Namespace) -> Optional[Path]:
+    """
+    Convierte el argumento de directorio base a Path cuando existe.
+
+    Argumentos:
+        args (argparse.Namespace): Argumentos parseados por argparse.
+
+    Salidas:
+        Optional[Path]: Ruta base o None.
+    """
+    return Path(args.directorio_base) if args.directorio_base else None
+
+
+def configurar_parser() -> argparse.ArgumentParser:
+    """
+    Configura el parser CLI para las funciones de resultados.
+
+    Funcionalidad:
+        Define subcomandos con los mismos nombres que las funciones públicas.
+
+    Argumentos:
+        None
+
+    Salidas:
+        argparse.ArgumentParser: Parser configurado.
+    """
+    parser = argparse.ArgumentParser(
+        prog="resultados",
+        description="Organiza archivos en carpetas de resultados estandarizadas.",
+    )
+    subparsers = parser.add_subparsers(dest="comando", required=True)
+
+    parser_imagen = subparsers.add_parser("guardar_imagen", help="Guarda una imagen.")
+    _agregar_argumentos_archivo(parser_imagen)
+
+    parser_informe = subparsers.add_parser("guardar_informe", help="Guarda un informe.")
+    _agregar_argumentos_archivo(parser_informe)
+
+    parser_md = subparsers.add_parser("guardar_md", help="Guarda un documento Markdown.")
+    _agregar_argumentos_archivo(parser_md)
+
+    parser_crear = subparsers.add_parser(
+        "crear_estructura_resultados",
+        help="Crea las carpetas de resultados.",
+    )
+    parser_crear.add_argument("--directorio-base", "--base", type=str, default=None)
+
+    parser_listar = subparsers.add_parser(
+        "listar_resultados",
+        help="Lista archivos en las carpetas de resultados.",
+    )
+    parser_listar.add_argument("--directorio-base", "--base", type=str, default=None)
+
+    return parser
+
+
+def main_guardar_imagen(argv: Optional[list[str]] = None) -> int:
+    """
+    Ejecuta guardar_imagen desde terminal.
+
+    Argumentos:
+        argv (Optional[list[str]]): Argumentos de terminal para pruebas.
+
+    Salidas:
+        int: Código de salida.
+    """
+    parser = argparse.ArgumentParser(prog="guardar_imagen")
+    _agregar_argumentos_archivo(parser)
+    args = parser.parse_args(argv)
+    guardar_imagen(
+        args.archivo_origen,
+        directorio_base=_directorio_base_desde_args(args),
+        mover=args.mover,
+        agregar_timestamp=args.agregar_timestamp,
+    )
+    return 0
+
+
+def main_guardar_informe(argv: Optional[list[str]] = None) -> int:
+    """
+    Ejecuta guardar_informe desde terminal.
+
+    Argumentos:
+        argv (Optional[list[str]]): Argumentos de terminal para pruebas.
+
+    Salidas:
+        int: Código de salida.
+    """
+    parser = argparse.ArgumentParser(prog="guardar_informe")
+    _agregar_argumentos_archivo(parser)
+    args = parser.parse_args(argv)
+    guardar_informe(
+        args.archivo_origen,
+        directorio_base=_directorio_base_desde_args(args),
+        mover=args.mover,
+        agregar_timestamp=args.agregar_timestamp,
+    )
+    return 0
+
+
+def main_guardar_md(argv: Optional[list[str]] = None) -> int:
+    """
+    Ejecuta guardar_md desde terminal.
+
+    Argumentos:
+        argv (Optional[list[str]]): Argumentos de terminal para pruebas.
+
+    Salidas:
+        int: Código de salida.
+    """
+    parser = argparse.ArgumentParser(prog="guardar_md")
+    _agregar_argumentos_archivo(parser)
+    args = parser.parse_args(argv)
+    guardar_md(
+        args.archivo_origen,
+        directorio_base=_directorio_base_desde_args(args),
+        mover=args.mover,
+        agregar_timestamp=args.agregar_timestamp,
+    )
+    return 0
+
+
+def main_crear_estructura_resultados(argv: Optional[list[str]] = None) -> int:
+    """
+    Ejecuta crear_estructura_resultados desde terminal.
+
+    Argumentos:
+        argv (Optional[list[str]]): Argumentos de terminal para pruebas.
+
+    Salidas:
+        int: Código de salida.
+    """
+    parser = argparse.ArgumentParser(prog="crear_estructura_resultados")
+    parser.add_argument("--directorio-base", "--base", type=str, default=None)
+    args = parser.parse_args(argv)
+    crear_estructura_resultados(_directorio_base_desde_args(args))
+    return 0
+
+
+def main_listar_resultados(argv: Optional[list[str]] = None) -> int:
+    """
+    Ejecuta listar_resultados desde terminal.
+
+    Argumentos:
+        argv (Optional[list[str]]): Argumentos de terminal para pruebas.
+
+    Salidas:
+        int: Código de salida.
+    """
+    parser = argparse.ArgumentParser(prog="listar_resultados")
+    parser.add_argument("--directorio-base", "--base", type=str, default=None)
+    args = parser.parse_args(argv)
+    listar_resultados(_directorio_base_desde_args(args))
+    return 0
+
+
+def main(argv: Optional[list[str]] = None) -> int:
+    """
+    Ejecuta el CLI agrupado del módulo resultados.
+
+    Argumentos:
+        argv (Optional[list[str]]): Argumentos de terminal para pruebas.
+
+    Salidas:
+        int: Código de salida.
+    """
+    parser = configurar_parser()
+    args = parser.parse_args(argv)
+
+    if args.comando == "guardar_imagen":
+        guardar_imagen(
+            args.archivo_origen,
+            directorio_base=_directorio_base_desde_args(args),
+            mover=args.mover,
+            agregar_timestamp=args.agregar_timestamp,
+        )
+    elif args.comando == "guardar_informe":
+        guardar_informe(
+            args.archivo_origen,
+            directorio_base=_directorio_base_desde_args(args),
+            mover=args.mover,
+            agregar_timestamp=args.agregar_timestamp,
+        )
+    elif args.comando == "guardar_md":
+        guardar_md(
+            args.archivo_origen,
+            directorio_base=_directorio_base_desde_args(args),
+            mover=args.mover,
+            agregar_timestamp=args.agregar_timestamp,
+        )
+    elif args.comando == "crear_estructura_resultados":
+        crear_estructura_resultados(_directorio_base_desde_args(args))
+    elif args.comando == "listar_resultados":
+        listar_resultados(_directorio_base_desde_args(args))
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

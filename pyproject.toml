@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Herramientas Python para crear proyectos, organizar resultados y convertir Markdown a LaTeX."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
     { name = "Henry Maldonado" }
 ]
@@ -23,7 +23,6 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Education",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -41,8 +40,21 @@ dev = [
 ]
 
 [project.scripts]
+create_project = "templates_library.modulos.proyectos:main"
 create-project = "templates_library.modulos.proyectos:main"
+crear_proyecto = "templates_library.modulos.proyectos:main"
 crear-proyecto = "templates_library.modulos.proyectos:main"
+guardar_imagen = "templates_library.modulos.resultados:main_guardar_imagen"
+guardar-imagen = "templates_library.modulos.resultados:main_guardar_imagen"
+guardar_informe = "templates_library.modulos.resultados:main_guardar_informe"
+guardar-informe = "templates_library.modulos.resultados:main_guardar_informe"
+guardar_md = "templates_library.modulos.resultados:main_guardar_md"
+guardar-md = "templates_library.modulos.resultados:main_guardar_md"
+crear_estructura_resultados = "templates_library.modulos.resultados:main_crear_estructura_resultados"
+crear-estructura-resultados = "templates_library.modulos.resultados:main_crear_estructura_resultados"
+listar_resultados = "templates_library.modulos.resultados:main_listar_resultados"
+listar-resultados = "templates_library.modulos.resultados:main_listar_resultados"
+md_a_latex = "templates_library.modulos.conversion:main"
 md-a-latex = "templates_library.modulos.conversion:main"
 
 [project.urls]
@@ -65,3 +77,6 @@ pythonpath = ["src"]
 [tool.ruff]
 line-length = 100
 target-version = "py310"
+
+[tool.ruff.lint]
+ignore = ["E701", "E702"]

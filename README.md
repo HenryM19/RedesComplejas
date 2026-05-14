@@ -1,153 +1,313 @@
 # Templates Library
 
-Templates Library es una librería Python para crear proyectos con estructura
-estandarizada, organizar resultados generados por scripts y convertir documentos
-Markdown a LaTeX usando plantillas académicas.
+Templates Library es una librería Python para automatizar tareas repetitivas en
+proyectos académicos y técnicos:
 
-## Instalación
+- crear proyectos con carpetas y archivos base;
+- organizar imágenes, informes y notas Markdown en carpetas de resultados;
+- convertir documentos Markdown a LaTeX usando plantillas incluidas;
+- reutilizar plantillas HTML/LaTeX desde un único paquete local.
 
-Desde el repositorio local:
+Por ahora está pensada para usarse desde este repositorio Git, sin publicarla en
+PyPI.
 
-```bash
+## Instalación Local
+
+Desde la raíz del repositorio:
+
+```powershell
+cd C:\GitHub\Templates_Library
 pip install -e .
 ```
 
-Con dependencias de desarrollo:
+El modo editable hace que cualquier cambio en el código del repo se refleje sin
+reinstalar. Solo necesitas repetir `pip install -e .` si cambias los comandos
+de terminal definidos en `pyproject.toml`.
 
-```bash
+Para instalar también herramientas de prueba y desarrollo:
+
+```powershell
 pip install -e ".[dev]"
 ```
 
-## Uso rápido
+Para comprobar que quedó instalada:
 
-Crear un proyecto:
-
-```bash
-create-project mi_analisis --type python
-create-project practica_latex --type latex
-create-project notebook_lab --type notebook
+```powershell
+python -c "import templates_library as tl; print(tl.__version__)"
+crear_proyecto --help
 ```
 
-Convertir Markdown a LaTeX:
+## Uso Desde Terminal
 
-```bash
-md-a-latex informe.md
-md-a-latex informe.md --salida informe.tex --compilar
+### Crear Proyectos
+
+```powershell
+crear_proyecto mi_analisis --type python
+crear_proyecto practica_latex --type latex
+crear_proyecto simulacion_julia --type julia
+crear_proyecto cuaderno_lab --type notebook
+crear_proyecto control_matlab --type matlab
 ```
 
-Usar la API desde Python:
+Crear el proyecto en una carpeta específica:
+
+```powershell
+crear_proyecto mi_analisis --type python --base C:\GitHub\test
+```
+
+Listar tipos de proyectos disponibles:
+
+```powershell
+crear_proyecto --list_type
+```
+
+Opciones principales:
+
+| Opción | Descripción |
+|---|---|
+| `nombre` | Nombre del proyecto a crear. |
+| `--type`, `--tipo` | Tipo de proyecto: `python`, `latex`, `julia`, `notebook`, `matlab`. |
+| `--base`, `--2route` | Carpeta donde se creará el proyecto. |
+| `--list_type`, `--listar-tipos` | Muestra los tipos de proyecto disponibles. |
+| `--quiet`, `--silencioso` | Oculta mensajes de progreso. |
+
+### Organizar Resultados
+
+Crear carpetas de resultados:
+
+```powershell
+crear_estructura_resultados --base .
+```
+
+Guardar archivos:
+
+```powershell
+guardar_imagen grafico.png --base .
+guardar_informe reporte.pdf --base .
+guardar_md notas.md --base .
+```
+
+Guardar con timestamp:
+
+```powershell
+guardar_imagen grafico.png --base . --agregar-timestamp
+```
+
+Mover en lugar de copiar:
+
+```powershell
+guardar_md notas.md --base . --mover
+```
+
+Listar resultados:
+
+```powershell
+listar_resultados --base .
+```
+
+Carpetas generadas:
+
+```text
+Resultados_imagenes/
+Resultados_informes/
+Resultados_md/
+```
+
+Opciones principales:
+
+| Comando | Descripción |
+|---|---|
+| `crear_estructura_resultados` | Crea las carpetas estándar de resultados. |
+| `guardar_imagen` | Copia o mueve imágenes a `Resultados_imagenes/`. |
+| `guardar_informe` | Copia o mueve informes a `Resultados_informes/`. |
+| `guardar_md` | Copia o mueve Markdown/texto a `Resultados_md/`. |
+| `listar_resultados` | Lista archivos guardados por categoría. |
+
+| Opción | Descripción |
+|---|---|
+| `--base`, `--directorio-base` | Directorio donde se crean o buscan resultados. |
+| `--mover` | Mueve el archivo en lugar de copiarlo. |
+| `--agregar-timestamp` | Agrega fecha y hora al nombre del archivo. |
+
+### Convertir Markdown a LaTeX
+
+```powershell
+md_a_latex informe.md
+md_a_latex informe.md --salida informe.tex
+md_a_latex informe.md --compilar
+md_a_latex informe.md --sin-setup
+```
+
+Opciones principales:
+
+| Opción | Descripción |
+|---|---|
+| `entrada` | Archivo Markdown de entrada. |
+| `--salida`, `-o` | Ruta del archivo `.tex` generado. |
+| `--compilar`, `-c` | Intenta compilar a PDF con `latexmk` o `pdflatex`. |
+| `--sin-setup` | No copia `Template/`, `images/` ni `references.bib`. |
+
+El comando crea automáticamente, junto al `.tex`, los recursos necesarios para
+compilar:
+
+```text
+Template/
+images/
+references.bib
+```
+
+## Uso Desde Python
+
+Puedes importar la API principal desde el paquete raíz:
 
 ```python
-from templates_library import crear_proyecto, guardar_imagen, crear_estructura_resultados
+import templates_library as tl
 
-crear_proyecto("mi_analisis", tipo="python")
-crear_estructura_resultados()
-guardar_imagen("grafico.png", agregar_timestamp=True)
+tl.crear_proyecto("mi_analisis", tipo="python")
+tl.crear_estructura_resultados()
+tl.guardar_imagen("grafico.png", agregar_timestamp=True)
 ```
 
-## Módulos principales
-
-### `templates_library.modulos.proyectos`
-
-Crea proyectos base para distintos flujos de trabajo.
-
-Tipos incluidos:
-
-- `python`
-- `latex`
-- `julia`
-- `notebook`
-- `matlab`
-
-Ejemplo:
+También puedes importar funciones específicas:
 
 ```python
-from templates_library.modulos.proyectos import crear_proyecto
+from templates_library import crear_proyecto, guardar_md, listar_resultados
 
-ruta = crear_proyecto("control_lab", tipo="latex")
-print(ruta)
+crear_proyecto("demo", tipo="python")
+guardar_md("notas.md")
+listar_resultados()
 ```
 
-### `templates_library.modulos.resultados`
-
-Organiza archivos producidos por análisis, simulaciones o reportes.
-
-Funciones públicas:
-
-- `guardar_imagen()`
-- `guardar_informe()`
-- `guardar_md()`
-- `crear_estructura_resultados()`
-- `listar_resultados()`
-
-### `templates_library.modulos.conversion`
-
-Convierte archivos Markdown a documentos LaTeX completos.
+### Crear Proyectos
 
 ```python
 from pathlib import Path
-from templates_library.modulos.conversion import ConversorMdLatex
+from templates_library import crear_proyecto
 
-conversor = ConversorMdLatex(Path("informe.md"), compilar=False)
-tex = conversor.convertir()
+ruta = crear_proyecto(
+    nombre_proyecto="control_lab",
+    tipo="latex",
+    directorio_base=Path("C:/GitHub/test"),
+    verbose=True,
+)
+
+print(ruta)
 ```
 
-## Estructura del repositorio
+### Organizar Resultados
+
+```python
+from templates_library import (
+    crear_estructura_resultados,
+    guardar_imagen,
+    guardar_informe,
+    guardar_md,
+    listar_resultados,
+)
+
+crear_estructura_resultados()
+guardar_imagen("grafico.png", agregar_timestamp=True)
+guardar_informe("reporte.pdf")
+guardar_md("notas.md")
+resultados = listar_resultados()
+```
+
+### Convertir Markdown a LaTeX
+
+```python
+from pathlib import Path
+from templates_library import ConversorMdLatex
+
+conversor = ConversorMdLatex(
+    ruta_md=Path("informe.md"),
+    ruta_salida=Path("informe.tex"),
+    compilar=False,
+)
+
+tex = conversor.convertir()
+print(tex)
+```
+
+## Nombres de Comandos
+
+La regla recomendada es simple: el comando principal de terminal usa el mismo
+nombre que la función Python.
+
+Ejemplos:
+
+| Python | Terminal |
+|---|---|
+| `crear_proyecto()` | `crear_proyecto` |
+| `guardar_imagen()` | `guardar_imagen` |
+| `guardar_informe()` | `guardar_informe` |
+| `guardar_md()` | `guardar_md` |
+| `crear_estructura_resultados()` | `crear_estructura_resultados` |
+| `listar_resultados()` | `listar_resultados` |
+
+También existen alias con guion medio por compatibilidad con estilos comunes de
+CLI, por ejemplo `crear-proyecto`, `guardar-imagen` y `md-a-latex`.
+
+## Desinstalar
+
+Para quitar la instalación editable:
+
+```powershell
+pip uninstall templates-library
+```
+
+Luego puedes verificar que ya no está disponible:
+
+```powershell
+python -c "import templates_library"
+```
+
+## Estructura Técnica
 
 ```text
 Templates_Library/
-├── src/
-│   └── templates_library/
-│       ├── __init__.py
-│       ├── modulos/
-│       │   ├── __init__.py
-│       │   ├── conversion.py
-│       │   ├── proyectos.py
-│       │   └── resultados.py
-│       ├── templates/
-│       │   ├── guia_estilos_codigo.md
-│       │   ├── latex_report/
-│       │   └── slides_HTML/
-│       └── utils/
-│           ├── __init__.py
-│           └── recursos.py
-├── tests/
-├── docs/
-├── pyproject.toml
-├── README.md
-├── CONTRIBUTING.md
-├── LICENSE
-└── CHANGELOG.md
+|-- src/
+|   `-- templates_library/
+|       |-- __init__.py
+|       |-- modulos/
+|       |   |-- conversion.py
+|       |   |-- proyectos.py
+|       |   `-- resultados.py
+|       |-- templates/
+|       |   |-- guia_estilos_codigo.md
+|       |   |-- latex_report/
+|       |   `-- slides_HTML/
+|       `-- utils/
+|           `-- recursos.py
+|-- tests/
+|-- docs/
+|-- pyproject.toml
+|-- README.md
+|-- CONTRIBUTING.md
+|-- LICENSE
+`-- CHANGELOG.md
 ```
 
 ## Desarrollo
 
 Ejecutar pruebas:
 
-```bash
-pytest
+```powershell
+python -m pytest -q
 ```
 
-Verificar importación y entry points:
+Revisar estilo:
 
-```bash
-python -m templates_library.modulos.proyectos --list_type
-python -m templates_library.modulos.conversion --help
+```powershell
+python -m ruff check src tests
 ```
 
-## Publicación en PyPI
+Construir paquete local:
 
-Construir el paquete:
-
-```bash
+```powershell
 python -m build
 ```
 
-Publicar con Twine:
-
-```bash
-twine upload dist/*
-```
+Los artefactos `build/`, `dist/` y `*.egg-info/` no deben subirse al repo.
 
 ## Licencia
 

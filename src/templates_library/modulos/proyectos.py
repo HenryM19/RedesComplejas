@@ -37,7 +37,6 @@ Fecha: 2026-05-12
 # Carga de librerías
 # =============================================================================
 
-import os
 import sys
 import shutil
 import argparse
@@ -670,18 +669,18 @@ def configurar_parser() -> argparse.ArgumentParser:
         argparse.ArgumentParser: Parser listo para parsear sys.argv.
     """
     parser = argparse.ArgumentParser(
-        prog="create_project",
+        prog="crear_proyecto",
         description=(
             "Create the base folder and file structure for a new project."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "Ejemplos:\n"
-            "  python crear_proyecto.py my_experiment\n"
-            "  python crear_proyecto.py lab_report --type latex\n"
-            "  python crear_proyecto.py pde_solver --type julia\n"
-            "  python crear_proyecto.py analysis --2route C:/Projects\n"
-            "  python crear_proyecto.py --list_type\n"
+            "  crear_proyecto my_experiment\n"
+            "  crear_proyecto lab_report --type latex\n"
+            "  crear_proyecto pde_solver --type julia\n"
+            "  crear_proyecto analysis --2route C:/Projects\n"
+            "  crear_proyecto --list_type\n"
         )
     )
 

@@ -259,7 +259,7 @@ class ConversorMdLatex:
                 print(f'[OK] Template copiado : {destino_template}')
             else:
                 print(f'[!] No se encontró la plantilla en: {origen_template}')
-                print(f'    Asegúrate de que templates/latex_report/Template/ esté instalado en el paquete.')
+                print('    Asegúrate de que templates/latex_report/Template/ esté instalado en el paquete.')
         else:
             print(f'[INFO] Template ya existe: {destino_template}')
 
@@ -286,7 +286,7 @@ class ConversorMdLatex:
                 )
                 print(f'[OK] Bib creado vacio : {destino_bib}')
         else:
-            print(f'[INFO] references.bib ya existe')
+            print('[INFO] references.bib ya existe')
 
     # ------------------------------------------------------------------
     # Parseo de frontmatter YAML
@@ -752,7 +752,7 @@ class ConversorMdLatex:
         if res.returncode == 0 and pdf.exists():
             print(f'[OK] PDF generado    : {pdf}')
         else:
-            print(f'[ERROR] Error al compilar. Ultimas lineas del log:')
+            print('[ERROR] Error al compilar. Ultimas lineas del log:')
             print(res.stdout[-600:])
 
 
@@ -823,7 +823,7 @@ def main(argv: Optional[list[str]] = None) -> int:
         return 1
 
     if ruta_entrada.suffix.lower() != '.md':
-        print(f'[AVISO] El archivo no tiene extensión .md.')
+        print('[AVISO] El archivo no tiene extensión .md.')
 
     conversor = ConversorMdLatex(
         ruta_md    = ruta_entrada,
