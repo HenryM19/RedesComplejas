@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Demo A</title>
+<style>
+body{margin:0;font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#eff6ff,#dbeafe);color:#1e3a8a}
+.wrap{min-height:100vh;display:grid;place-items:center;padding:24px}
+.card{background:rgba(255,255,255,.88);border:1px solid rgba(191,219,254,.95);border-radius:18px;padding:26px;box-shadow:0 10px 30px rgba(59,130,246,.12);max-width:720px}
+h1{margin:0 0 10px;font-size:28px}
+p{margin:0;font-size:15px;line-height:1.7;color:#334155}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.stat{background:#fff;border-radius:12px;padding:16px;text-align:center;border:1px solid #dbeafe}
+.val{font-size:26px;font-weight:800;color:#2563eb}
+.lbl{font-size:12px;color:#64748b;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>Vista embebida A</h1>
+    <p>Ejemplo de contenido HTML externo para mostrar dashboards, gráficos exportados o resultados interactivos dentro del template.</p>
+    <div class="grid">
+      <div class="stat"><div class="val">42</div><div class="lbl">Casos</div></div>
+      <div class="stat"><div class="val">91%</div><div class="lbl">Precisión</div></div>
+      <div class="stat"><div class="val">7</div><div class="lbl">Alertas</div></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

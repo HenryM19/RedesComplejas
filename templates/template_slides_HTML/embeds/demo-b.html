@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Demo B</title>
+<style>
+body{margin:0;font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#ecfeff,#d1fae5);color:#065f46}
+.wrap{min-height:100vh;padding:30px}
+.panel{height:100%;background:rgba(255,255,255,.88);border:1px solid #bbf7d0;border-radius:18px;padding:22px;box-shadow:0 10px 30px rgba(16,185,129,.12)}
+h1{margin:0 0 10px;font-size:26px}
+p{margin:0 0 18px;font-size:15px;line-height:1.7;color:#334155}
+.bars{display:flex;align-items:flex-end;gap:14px;height:220px;padding:8px 0}
+.bar{flex:1;border-radius:12px 12px 4px 4px;background:linear-gradient(180deg,#34d399,#059669);position:relative}
+.bar span{position:absolute;bottom:-28px;left:50%;transform:translateX(-50%);font-size:12px;color:#475569}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panel">
+    <h1>Vista embebida B</h1>
+    <p>Segunda pestaña de ejemplo para validar el cambio de iframes sin modificar la estructura principal de las diapositivas.</p>
+    <div class="bars">
+      <div class="bar" style="height:45%"><span>A</span></div>
+      <div class="bar" style="height:72%"><span>B</span></div>
+      <div class="bar" style="height:58%"><span>C</span></div>
+      <div class="bar" style="height:88%"><span>D</span></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

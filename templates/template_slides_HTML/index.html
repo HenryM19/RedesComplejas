@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Template Slides</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#eef2f7;--bg2:#ffffff;--tx:#1e293b;--tx2:#475569;
+  --accent:#3b82f6;--accent2:#6366f1;--accent3:#10b981;
+  --border:#e2e8f0;--shadow:0 2px 12px rgba(0,0,0,.08)
+}
+body{font-family:'Aptos','Segoe UI Variable Text','Segoe UI',sans-serif;background:var(--bg);color:var(--tx);height:100vh;overflow:hidden}
+#deck{height:calc(100vh - 54px);display:flex}
+.slide{display:none;flex:1;overflow-y:auto;padding:28px 40px 20px;flex-direction:column;gap:16px}
+.slide.active{display:flex}
+.slide.fill{justify-content:center}
+.slide.end{justify-content:flex-end}
+.slide.spread{justify-content:space-between}
+.slide.auto-balance > :not(.sdiv):not(script){flex:0 0 auto}
+.slide.simulation-slide{overflow:hidden}
+.slide.concept-slide{overflow:hidden}
+.flow{display:flex;flex-direction:column;gap:16px}
+.flow.center{align-items:center;justify-content:center;text-align:center}
+.flow.grow,.grow{flex:1;min-height:0}
+.stack{display:flex;flex-direction:column;gap:14px}
+.stack.grow > .card,.stack.grow > .ans,.stack.grow > .ifw{flex:1}
+.fill-main{flex:1;min-height:0}
+.slide-layout{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px;align-items:stretch;min-height:100%;flex:1}
+.concept-slide .g2.grow{min-height:0}
+.concept-slide .card:last-child{flex:0 0 auto}
+.simulation-slide .slide-layout{height:100%;min-height:0}
+.simulation-slide .card.fill-card,.simulation-slide .simulation.fill-card{min-height:0}
+.simulation-slide .simulation.fill-card iframe{height:100%;min-height:0}
+.span-4{grid-column:span 4}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-7{grid-column:span 7}.span-8{grid-column:span 8}.span-12{grid-column:1 / -1}
+.self-start{align-self:start}.self-center{align-self:center}.self-end{align-self:end}
+
+.sdiv{justify-content:center;align-items:center;text-align:center}
+.sdiv .snum{font-size:clamp(80px,12vw,130px);font-weight:900;opacity:.18;line-height:1;color:#fff}
+.sdiv .stitle{font-size:clamp(32px,5vw,64px);font-weight:800;margin-top:-16px;color:#fff;letter-spacing:-1.2px}
+.sdiv .ssub{font-size:15px;color:rgba(255,255,255,.75);margin-top:10px}
+
+.cover{justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,#0f172a,#1e40af)}
+.cover h1{font-size:clamp(30px,4.6vw,56px);font-weight:800;color:#fff;line-height:1.15}
+.cover .sub{font-size:15px;color:rgba(255,255,255,.65);margin-top:8px}
+.cover .meta{margin-top:20px;font-size:13px;color:rgba(255,255,255,.5)}
+
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow)}
+.card.fill-card,.simulation.fill-card,.ifw.fill-card{height:100%;display:flex;flex-direction:column}
+.card.fill-card > :last-child,.simulation.fill-card > :last-child,.ifw.fill-card > :last-child{margin-top:auto}
+.card.fill-card .g2,.card.fill-card .g3,.card.fill-card .rt,.card.fill-card .code,.card.fill-card .vars,.ifw.fill-card iframe{width:100%}
+.card.fill-card .g2.fill-main,.card.fill-card .g3.fill-main,.card.fill-card .code.fill-main,.ifw.fill-card iframe.fill-main{flex:1}
+.card.fill-card .g2.fill-main,.card.fill-card .g3.fill-main{align-content:stretch}
+.card.fill-card .g2.fill-main > *,.card.fill-card .g3.fill-main > *{height:100%}
+h1,h2,h3,.stitle{font-family:'Aptos Display','Segoe UI Variable Display','Aptos','Segoe UI',sans-serif}
+h2{font-size:22px;font-weight:800;color:var(--tx);letter-spacing:-.04em}
+h3{font-size:12px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
+p,li{font-size:13.5px;color:var(--tx2);line-height:1.65}
+ul,ol{padding-left:18px}
+.mt{margin-top:10px}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:stretch}
+
+.eq{background:#eff6ff;border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 16px;font-size:14px;font-weight:700;color:#1d4ed8;margin:8px 0;overflow-x:auto}
+.eq mjx-container{font-size:1.02em !important}
+
+.vars{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:8px 12px;margin:4px 0 8px}
+.vars table{width:100%;border-collapse:collapse;font-size:12.5px}
+.vars th{text-align:left;color:var(--tx2);font-weight:700;padding:3px 8px;border-bottom:1px solid var(--border);font-size:12px}
+.vars td{padding:3px 8px;color:var(--tx2);line-height:1.5}
+.vars td:first-child{font-family:'Courier New',monospace;color:#1d4ed8;font-weight:600;white-space:nowrap;width:38%}
+
+.rt{width:100%;border-collapse:collapse;font-size:13px}
+.rt th{background:var(--accent);color:#fff;padding:7px 10px;text-align:left;font-size:12px}
+.rt td{padding:6px 10px;border-bottom:1px solid var(--border);font-size:13px}
+.rt tr:nth-child(even) td{background:#f8fafc}
+
+.ans{background:#f0fdf4;border-left:4px solid var(--accent3);border-radius:0 8px 8px 0;padding:10px 14px}
+.ans .ql{display:inline-block;background:var(--accent3);color:#fff;border-radius:5px;padding:2px 8px;font-size:11px;font-weight:700;margin-bottom:5px}
+.ans strong{color:#065f46;font-size:13px;display:block;margin-bottom:3px}
+.ans p{font-size:13px;color:#374151}
+
+.stat{text-align:center;padding:12px 8px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;display:flex;flex-direction:column;justify-content:center;min-height:100%}
+.stat .val{font-size:24px;font-weight:800;color:var(--accent);line-height:1.1}
+.stat .lbl{font-size:11px;color:var(--tx2);margin-top:3px}
+
+.code{background:#1e293b;color:#e2e8f0;border-radius:8px;padding:12px 14px;font-family:'Courier New',monospace;font-size:12px;line-height:1.7}
+.kw{color:#7dd3fc}.cm{color:#64748b;font-style:italic}.fn{color:#fbbf24}.str{color:#86efac}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11.5px;font-weight:600}
+.b-blue{background:#dbeafe;color:#1d4ed8}.b-green{background:#d1fae5;color:#065f46}
+.b-red{background:#fee2e2;color:#991b1b}.b-orange{background:#ffedd5;color:#9a3412}
+.b-purple{background:#ede9fe;color:#5b21b6}.b-yellow{background:#fef9c3;color:#713f12}
+
+.ifw{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.ifw iframe{width:100%;border:none;display:block}
+.simulation{background:linear-gradient(180deg,#f8fbff,#eef5ff);border:1px solid #bfdbfe;border-radius:18px;padding:14px;box-shadow:0 16px 30px rgba(37,99,235,.08)}
+.simulation .sim-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.simulation .sim-title{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#1d4ed8}
+.simulation .sim-copy{font-size:12.5px;color:var(--tx2);line-height:1.6}
+.simulation iframe{width:100%;height:min(48vh,360px);border:none;border-radius:12px;background:#fff;display:block;flex:1}
+.tabs{display:flex;gap:5px;padding:8px 10px;background:#f1f5f9;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.tbn{padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);font-size:12.5px;cursor:pointer;font-weight:600;color:var(--tx2);touch-action:manipulation}
+.tbn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+.note{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 14px;font-size:13px;color:#78350f}
+
+#nav{position:fixed;bottom:0;left:0;right:0;min-height:54px;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;padding:0 20px env(safe-area-inset-bottom);z-index:1000}
+#nav button{padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:var(--bg2);cursor:pointer;font-size:13px;font-weight:700;color:var(--tx);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#nav button:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+#prog{flex:1;height:4px;background:#e2e8f0;border-radius:2px}
+#pbar{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+#snum{font-size:12.5px;color:var(--tx2);font-weight:600;white-space:nowrap;min-width:50px;text-align:right}
+
+@media (max-width: 900px){
+  .slide{padding:22px 18px 16px}
+  .g2,.g3,.slide-layout{grid-template-columns:1fr}
+  .span-4,.span-5,.span-6,.span-7,.span-8,.span-12{grid-column:1 / -1}
+  #deck{height:calc(100dvh - 70px)}
+  #nav{padding:8px 10px calc(8px + env(safe-area-inset-bottom));gap:8px;flex-wrap:wrap}
+  #nav button{padding:10px 12px;min-height:44px}
+  #snum{order:5;width:100%;text-align:center}
+  .simulation iframe{height:min(42vh,300px)}
+  .slide.simulation-slide{overflow-y:auto}
+  .simulation-slide .slide-layout{grid-template-rows:auto;height:auto}
+  .simulation-slide .simulation.fill-card iframe{height:min(52vh,420px);min-height:300px}
+}
+
+@media (max-width: 640px){
+  body{height:100dvh}
+  .slide{padding:18px 14px 12px}
+  h2{font-size:18px}
+  p,li{font-size:14px}
+  .card{padding:16px}
+  .tabs{gap:8px;padding:10px}
+  .tbn{flex:1;justify-content:center;min-height:42px}
+  #nav{display:grid;grid-template-columns:1fr 1fr;align-items:center}
+  #prog{grid-column:1 / -1;order:4}
+}
+</style>
+</head>
+<body>
+<div id="deck">
+
+<div class="slide cover active">
+  <h1>Título de la Presentación<br>Subtítulo o Proyecto</h1>
+  <div class="sub">Plantilla base de diapositivas HTML</div>
+  <div class="meta">Autor o curso · Fecha · Institución</div>
+</div>
+
+<div class="slide sdiv" style="background:linear-gradient(135deg,#1e3a5f,#2563eb)">
+  <div class="snum">01</div>
+  <div class="stitle">Sección Principal</div>
+  <div class="ssub">Tema · contexto · ideas clave</div>
+</div>
+
+<div class="slide concept-slide">
+  <h2>Marco Conceptual</h2>
+  <div class="g2 grow">
+    <div class="card fill-card">
+      <h3>Bloque de teoría</h3>
+      <p>Usa este bloque para introducir definiciones, contexto y objetivos. Conserva la misma jerarquía visual de la presentación original.</p>
+      <div class="eq">\[\text{Métrica} = \frac{\text{valor}}{\text{referencia}}\]</div>
+      <div class="vars"><table>
+        <tr><th>Variable</th><th>Descripción</th></tr>
+        <tr><td>x</td><td>Dato principal del análisis</td></tr>
+        <tr><td>y</td><td>Valor de referencia o comparación</td></tr>
+      </table></div>
+      <p class="mt">También puedes mezclar texto explicativo con fórmulas, tablas y listas cortas.</p>
+    </div>
+    <div class="card fill-card">
+      <h3>Código o procedimiento</h3>
+      <div class="code fill-main">
+<span class="kw">import</span> pandas <span class="kw">as</span> pd<br><br>
+<span class="cm"># Reemplaza este bloque con tu ejemplo</span><br>
+datos = pd.<span class="fn">read_csv</span>(<span class="str">"datos.csv"</span>)<br>
+resumen = datos.<span class="fn">describe</span>()
+      </div>
+      <div class="note mt">
+        Este cuadro sirve para destacar supuestos, alertas o interpretación rápida del contenido.
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Tarjetas de apoyo</h3>
+    <div class="g3">
+      <div class="stat"><div class="val">x</div><div class="lbl">Variable principal del modelo</div></div>
+      <div class="stat"><div class="val">y</div><div class="lbl">Valor de referencia o control</div></div>
+      <div class="stat"><div class="val">M</div><div class="lbl">Métrica final comparada en el slide</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="slide spread">
+  <h2>Resultados Resumidos</h2>
+  <div class="g2 grow">
+    <div class="stack grow">
+      <div class="card fill-card">
+        <h3>Indicadores principales</h3>
+        <div class="g2 fill-main" style="gap:8px;margin-bottom:12px">
+          <div class="stat"><div class="val">24</div><div class="lbl">Muestras</div></div>
+          <div class="stat"><div class="val">87%</div><div class="lbl">Cobertura</div></div>
+          <div class="stat"><div class="val">3.4</div><div class="lbl">Promedio</div></div>
+          <div class="stat"><div class="val" style="color:#10b981">OK</div><div class="lbl">Estado</div></div>
+        </div>
+        <p>Los contenedores de estadísticas replican el formato original para resaltar KPIs o métricas resumidas.</p>
+      </div>
+      <div class="ans mt">
+        <div class="ql">P1</div>
+        <strong>Pregunta o conclusión clave</strong>
+        <p>Usa este bloque para responder preguntas del informe, resaltar observaciones importantes o dejar interpretación ejecutiva.</p>
+      </div>
+    </div>
+    <div class="card fill-card">
+      <h3>Tabla de resultados</h3>
+      <table class="rt">
+        <tr><th>Elemento</th><th>Valor</th><th>Comentario</th></tr>
+        <tr><td>Escenario A</td><td>12.4</td><td>Rendimiento base</td></tr>
+        <tr><td>Escenario B</td><td>18.1</td><td>Mejora observada</td></tr>
+        <tr><td>Escenario C</td><td>9.7</td><td>Condición restrictiva</td></tr>
+      </table>
+      <p class="mt">Las tablas usan el mismo color primario y alternancia suave de filas.</p>
+    </div>
+  </div>
+</div>
+
+<div class="slide simulation-slide">
+  <div class="slide-layout">
+    <div class="card span-4 fill-card">
+      <h3>Bloque reusable</h3>
+      <h2>Simulation</h2>
+      <p>Este bloque encapsula un iframe con título y texto auxiliar. Puedes moverlo a cualquier posición dentro del grid cambiando las clases `span-*` y `self-*`.</p>
+      <div class="note mt">Ejemplo: en desktop queda a la derecha ocupando toda la altura útil; en móvil pasa a ancho completo. Solo cambia el `src` del `iframe` para cargar otra simulación.</div>
+    </div>
+    <div class="simulation span-8 fill-card">
+      <div class="sim-head">
+        <div>
+          <div class="sim-title">Simulation</div>
+          <p class="sim-copy">Este bloque carga un archivo HTML independiente con su propio CSS y JavaScript, ideal para simulaciones de calor, canvases o visualizaciones interactivas completas.</p>
+        </div>
+        <span class="badge b-blue">Embed autónomo</span>
+      </div>
+      <iframe src="embeds/simulation.html" loading="lazy" title="Simulation demo"></iframe>
+    </div>
+  </div>
+</div>
+
+<div class="slide">
+  <h2>Visualización Embebida con Tabs</h2>
+  <div class="ifw fill-card grow">
+    <div class="tabs">
+      <button type="button" class="tbn on" onclick="ct('demo-a',this,'demo-frame')">Vista A</button>
+      <button type="button" class="tbn" onclick="ct('demo-b',this,'demo-frame')">Vista B</button>
+    </div>
+    <iframe id="demo-a" class="demo-frame fill-main" src="embeds/demo-a.html" height="420" loading="lazy" style="display:block"></iframe>
+    <iframe id="demo-b" class="demo-frame fill-main" src="embeds/demo-b.html" height="420" loading="lazy" style="display:none"></iframe>
+  </div>
+  <p style="font-size:12.5px;color:var(--tx2);text-align:center">Esta diapositiva conserva la navegación por pestañas del original para alternar gráficos o paneles HTML.</p>
+</div>
+
+<div class="slide sdiv" style="background:linear-gradient(135deg,#064e3b,#059669)">
+  <div class="snum">02</div>
+  <div class="stitle">Cierre</div>
+  <div class="ssub">Conclusiones · recomendaciones · próximos pasos</div>
+</div>
+
+<div class="slide auto-balance">
+  <h2>Conclusiones</h2>
+  <div class="g2 grow">
+    <div class="card fill-card">
+      <h3>Hallazgos</h3>
+      <ul class="fill-main" style="display:flex;flex-direction:column;gap:9px;justify-content:space-evenly">
+        <li><span class="badge b-blue">Formato</span> Deck autocontenido con navegación por teclado, botones y barra de progreso.</li>
+        <li><span class="badge b-green">Reutilizable</span> Sustituye títulos, tarjetas, tablas e iframes sin tocar el JavaScript.</li>
+        <li><span class="badge b-purple">Consistente</span> Mantiene colores, jerarquía visual y espaciado del archivo original.</li>
+      </ul>
+    </div>
+    <div class="card fill-card">
+      <h3>Checklist de edición</h3>
+      <ol class="fill-main" style="display:flex;flex-direction:column;gap:9px;justify-content:space-evenly">
+        <li>Duplica una diapositiva existente y cambia solo el contenido.</li>
+        <li>Si insertas HTML interactivo, colócalo en la carpeta <strong>embeds</strong>.</li>
+        <li>Conserva las clases CSS para mantener el mismo diseño.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div id="nav">
+  <button type="button" onclick="go(-1)">&#8592; Anterior</button>
+  <div id="prog"><div id="pbar"></div></div>
+  <span id="snum"></span>
+  <button type="button" onclick="go(1)">Siguiente &#8594;</button>
+</div>
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+};
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+var cur = 0;
+var pbar = document.getElementById('pbar');
+var snumEl = document.getElementById('snum');
+var touchStartX = 0;
+var touchStartY = 0;
+
+function prepareEquations() {
+  document.querySelectorAll('.eq').forEach(function(node) {
+    var latex = node.textContent.trim();
+    if (!latex) return;
+    if (!latex.startsWith('\\[') && !latex.startsWith('$$')) {
+      node.textContent = '\\[' + latex + '\\]';
+    }
+  });
+}
+
+function goTo(i) {
+  slides[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(i, total - 1));
+  slides[cur].classList.add('active');
+  pbar.style.width = ((cur + 1) / total * 100) + '%';
+  snumEl.textContent = (cur + 1) + ' / ' + total;
+  slides[cur].scrollTop = 0;
+}
+
+function go(dir) { goTo(cur + dir); }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') go(1);
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1);
+});
+
+document.addEventListener('touchstart', function(e) {
+  if (e.touches.length !== 1) return;
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+document.addEventListener('touchend', function(e) {
+  if (!touchStartX || !touchStartY || !e.changedTouches.length) return;
+  var dx = e.changedTouches[0].clientX - touchStartX;
+  var dy = e.changedTouches[0].clientY - touchStartY;
+  touchStartX = 0;
+  touchStartY = 0;
+
+  if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy)) return;
+  if (dx < 0) go(1);
+  if (dx > 0) go(-1);
+}, { passive: true });
+
+function ct(id, btn, cls) {
+  var ifw = btn.closest('.ifw');
+  ifw.querySelectorAll('.' + cls).forEach(function(frame) { frame.style.display = 'none'; });
+  ifw.querySelectorAll('.tbn').forEach(function(tab) { tab.classList.remove('on'); });
+  document.getElementById(id).style.display = 'block';
+  btn.classList.add('on');
+}
+
+prepareEquations();
+goTo(0);
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Simulation Embed</title>
+<style>
+:root{
+  --bg:#07111f;
+  --panel:rgba(9,20,38,.82);
+  --line:rgba(148,163,184,.22);
+  --text:#dbe7ff;
+  --muted:#93a6c4;
+  --accent:#38bdf8;
+  --accent-2:#f97316;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Aptos","Segoe UI Variable Text","Segoe UI",sans-serif;
+  background:radial-gradient(circle at top,#16315f 0%,#07111f 58%,#02060d 100%);
+  color:var(--text);
+}
+.wrap{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:minmax(220px,280px) 1fr;
+  gap:16px;
+  padding:16px;
+}
+.panel,
+.stage{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:0 24px 60px rgba(2,6,23,.35);
+  backdrop-filter:blur(14px);
+}
+.panel{
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.kicker{
+  display:inline-flex;
+  align-self:flex-start;
+  padding:4px 10px;
+  border-radius:999px;
+  background:rgba(56,189,248,.14);
+  color:#7dd3fc;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+h1{
+  margin:0;
+  font-size:clamp(22px,2.6vw,30px);
+  line-height:1.15;
+  font-family:"Aptos Display","Segoe UI Variable Display","Aptos","Segoe UI",sans-serif;
+  font-weight:800;
+}
+p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+.controls{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.control label{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  font-size:12px;
+  color:#bfdbfe;
+  margin-bottom:6px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.control output{
+  color:#fff;
+  font-weight:700;
+}
+.control input[type="range"]{
+  width:100%;
+  accent-color:var(--accent);
+}
+.row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+button{
+  border:none;
+  border-radius:12px;
+  padding:10px 14px;
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+button.secondary{
+  background:rgba(148,163,184,.14);
+  color:#e2e8f0;
+  border:1px solid rgba(148,163,184,.18);
+}
+.metrics{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.metric{
+  padding:12px;
+  border-radius:14px;
+  background:rgba(15,23,42,.56);
+  border:1px solid rgba(148,163,184,.14);
+}
+.metric strong{
+  display:block;
+  font-size:22px;
+  line-height:1.1;
+}
+.metric span{
+  font-size:12px;
+  color:var(--muted);
+}
+.stage{
+  position:relative;
+  overflow:hidden;
+  min-height:420px;
+}
+canvas{
+  width:100%;
+  height:100%;
+  display:block;
+}
+.legend{
+  position:absolute;
+  right:16px;
+  bottom:16px;
+  background:rgba(9,20,38,.78);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:12px;
+  color:#dbeafe;
+}
+.legend::before{
+  content:"";
+  display:inline-block;
+  width:72px;
+  height:8px;
+  margin-right:8px;
+  border-radius:999px;
+  vertical-align:middle;
+  background:linear-gradient(90deg,#0ea5e9,#22c55e,#facc15,#f97316,#ef4444);
+}
+@media (max-width: 720px){
+  .wrap{
+    grid-template-columns:1fr;
+    padding:12px;
+  }
+  .stage{
+    min-height:320px;
+  }
+  .metrics{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="panel">
+    <span class="kicker">Simulation Block</span>
+    <h1>Mapa de calor interactivo</h1>
+    <p>Este embed es autónomo: acepta HTML, CSS y JavaScript propio. Puedes reemplazar esta demo por una simulación numérica, un campo térmico o cualquier visualización personalizada.</p>
+
+    <div class="controls">
+      <div class="control">
+        <label for="sources">Fuentes de calor <output id="sourcesOut">4</output></label>
+        <input id="sources" type="range" min="1" max="8" value="4">
+      </div>
+      <div class="control">
+        <label for="speed">Velocidad <output id="speedOut">0.8x</output></label>
+        <input id="speed" type="range" min="2" max="18" value="8">
+      </div>
+      <div class="control">
+        <label for="glow">Difusión <output id="glowOut">0.55</output></label>
+        <input id="glow" type="range" min="20" max="95" value="55">
+      </div>
+    </div>
+
+    <div class="row">
+      <button id="shuffle" type="button">Regenerar campo</button>
+      <button id="pause" type="button" class="secondary">Pausar</button>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><strong id="tempPeak">0</strong><span>Pico térmico</span></div>
+      <div class="metric"><strong id="tempMean">0</strong><span>Promedio</span></div>
+      <div class="metric"><strong id="energy">0</strong><span>Energía relativa</span></div>
+    </div>
+  </section>
+
+  <section class="stage">
+    <canvas id="heatCanvas"></canvas>
+    <div class="legend">Frío a caliente</div>
+  </section>
+</div>
+
+<script>
+const canvas = document.getElementById('heatCanvas');
+const context = canvas.getContext('2d');
+const controls = {
+  sources: document.getElementById('sources'),
+  speed: document.getElementById('speed'),
+  glow: document.getElementById('glow')
+};
+const outputs = {
+  sources: document.getElementById('sourcesOut'),
+  speed: document.getElementById('speedOut'),
+  glow: document.getElementById('glowOut')
+};
+const stats = {
+  peak: document.getElementById('tempPeak'),
+  mean: document.getElementById('tempMean'),
+  energy: document.getElementById('energy')
+};
+const shuffleButton = document.getElementById('shuffle');
+const pauseButton = document.getElementById('pause');
+
+let emitters = [];
+let animationFrame = 0;
+let paused = false;
+let lastTime = 0;
+
+function resizeCanvas() {
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = Math.floor(rect.width * ratio);
+  canvas.height = Math.floor(rect.height * ratio);
+  context.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
+
+function randomBetween(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function buildEmitters() {
+  const amount = Number(controls.sources.value);
+  const rect = canvas.getBoundingClientRect();
+  emitters = Array.from({ length: amount }, () => ({
+    x: randomBetween(40, Math.max(41, rect.width - 40)),
+    y: randomBetween(40, Math.max(41, rect.height - 40)),
+    radius: randomBetween(60, 150),
+    angle: randomBetween(0, Math.PI * 2),
+    drift: randomBetween(0.3, 1.1),
+    force: randomBetween(0.8, 1.4)
+  }));
+  outputs.sources.textContent = String(amount);
+}
+
+function updateOutputs() {
+  outputs.sources.textContent = controls.sources.value;
+  outputs.speed.textContent = (Number(controls.speed.value) / 10).toFixed(1) + 'x';
+  outputs.glow.textContent = (Number(controls.glow.value) / 100).toFixed(2);
+}
+
+function temperatureColor(value) {
+  const hue = 210 - value * 210;
+  const light = 28 + value * 34;
+  return `hsl(${hue}, 92%, ${light}%)`;
+}
+
+function drawFrame(time) {
+  if (paused) {
+    animationFrame = requestAnimationFrame(drawFrame);
+    return;
+  }
+
+  const rect = canvas.getBoundingClientRect();
+  const width = rect.width;
+  const height = rect.height;
+  const speed = Number(controls.speed.value) / 10;
+  const glow = Number(controls.glow.value) / 100;
+  const delta = (time - lastTime || 16) / 16;
+  lastTime = time;
+
+  context.clearRect(0, 0, width, height);
+  context.fillStyle = 'rgba(2, 6, 23, 0.18)';
+  context.fillRect(0, 0, width, height);
+
+  let peak = 0;
+  let energy = 0;
+
+  emitters.forEach((emitter, index) => {
+    emitter.angle += 0.01 * emitter.drift * speed * delta;
+    emitter.x += Math.cos(emitter.angle + index) * emitter.drift * 0.9 * speed;
+    emitter.y += Math.sin(emitter.angle * 1.2 + index) * emitter.drift * 0.9 * speed;
+
+    if (emitter.x < 0 || emitter.x > width) emitter.angle = Math.PI - emitter.angle;
+    if (emitter.y < 0 || emitter.y > height) emitter.angle *= -1;
+
+    emitter.x = Math.max(0, Math.min(width, emitter.x));
+    emitter.y = Math.max(0, Math.min(height, emitter.y));
+
+    const pulse = (Math.sin(time * 0.0012 * speed + index) + 1) / 2;
+    const intensity = Math.min(1, emitter.force * (0.55 + pulse * glow));
+    const radius = emitter.radius * (0.7 + glow);
+
+    peak = Math.max(peak, intensity * 100);
+    energy += intensity * radius;
+
+    const gradient = context.createRadialGradient(emitter.x, emitter.y, 0, emitter.x, emitter.y, radius);
+    gradient.addColorStop(0, temperatureColor(intensity));
+    gradient.addColorStop(0.45, `hsla(${180 - intensity * 140}, 95%, 58%, 0.42)`);
+    gradient.addColorStop(1, 'rgba(2, 6, 23, 0)');
+
+    context.globalCompositeOperation = 'screen';
+    context.fillStyle = gradient;
+    context.beginPath();
+    context.arc(emitter.x, emitter.y, radius, 0, Math.PI * 2);
+    context.fill();
+  });
+
+  context.globalCompositeOperation = 'source-over';
+  context.strokeStyle = 'rgba(148, 163, 184, 0.12)';
+  context.lineWidth = 1;
+  for (let x = 0; x < width; x += 32) {
+    context.beginPath();
+    context.moveTo(x, 0);
+    context.lineTo(x, height);
+    context.stroke();
+  }
+  for (let y = 0; y < height; y += 32) {
+    context.beginPath();
+    context.moveTo(0, y);
+    context.lineTo(width, y);
+    context.stroke();
+  }
+
+  const mean = emitters.length ? energy / emitters.length / 2.2 : 0;
+  stats.peak.textContent = peak.toFixed(0) + '°';
+  stats.mean.textContent = mean.toFixed(1) + '°';
+  stats.energy.textContent = energy.toFixed(0);
+
+  animationFrame = requestAnimationFrame(drawFrame);
+}
+
+controls.sources.addEventListener('input', () => {
+  updateOutputs();
+  buildEmitters();
+});
+controls.speed.addEventListener('input', updateOutputs);
+controls.glow.addEventListener('input', updateOutputs);
+shuffleButton.addEventListener('click', buildEmitters);
+pauseButton.addEventListener('click', () => {
+  paused = !paused;
+  pauseButton.textContent = paused ? 'Reanudar' : 'Pausar';
+});
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  buildEmitters();
+});
+
+updateOutputs();
+resizeCanvas();
+buildEmitters();
+animationFrame = requestAnimationFrame(drawFrame);
+window.addEventListener('beforeunload', () => cancelAnimationFrame(animationFrame));
+</script>
+</body>
+</html>
