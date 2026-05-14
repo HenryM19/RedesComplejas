@@ -44,7 +44,7 @@ from typing import Optional
 # =============================================================================
 
 # Directorio de templates, relativo a este script
-DIR_TEMPLATES: Path = Path(__file__).parent / 'templates'
+DIR_TEMPLATES: Path = Path(__file__).parent.parent / 'templates'
 
 # Subcarpeta de la plantilla LaTeX dentro de DIR_TEMPLATES
 DIR_TEMPLATE_LATEX: Path = DIR_TEMPLATES / 'latex'

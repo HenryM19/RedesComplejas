@@ -28,9 +28,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 import uvicorn
 
-# Importar módulos locales
+# Importar módulos locales desde src/
 import sys
-sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 
 try:
     from crear_proyecto import crear_proyecto, listar_tipos_disponibles, TIPOS_PROYECTO

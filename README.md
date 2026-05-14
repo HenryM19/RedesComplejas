@@ -6,29 +6,42 @@ configurar carpetas, aplicar formatos y generar documentos, permitiendo
 enfocarse en el contenido.
 
 **Autor:** Ing. Henry Maldonado · Universidad de Cuenca  
-**Repositorio:** `C:\GitHub\Formatos_repos`
+**Repositorio:** `C:\GitHub\Templates_Library`
 
 ---
 
 ## Estructura del repositorio
 
 ```
-Formatos_repos/
+Templates_Library/
 │
-├── crear_proyecto.py       → Crea la estructura de carpetas de un proyecto nuevo
-├── funciones_template.py   → Librería para guardar resultados en carpetas organizadas
-├── md_a_latex.py           → Convierte un informe .md a LaTeX con plantilla UCUENCA
+├── README.md                           → Esta documentación
 │
-└── templates/
-    ├── guia_estilos_codigo.md      → Convenciones de código por lenguaje
-    └── latex/
-        ├── main.tex                → Documento principal de referencia
-        ├── references.bib          → Plantilla de bibliografía BibTeX
-        ├── images/                 → Carpeta de imágenes (vacía)
-        └── Template/
-            ├── Template.tex        → Estilos, paquetes y cajas UCUENCA
-            ├── Portada.tex         → Portada institucional editable
-            └── ucuenca_logo.png    → Logo oficial UCUENCA
+├── src/                                → Scripts principales
+│   ├── crear_proyecto.py               → Crea la estructura de carpetas de un proyecto nuevo
+│   ├── funciones_template.py           → Librería para guardar resultados organizados
+│   └── md_a_latex.py                   → Convierte un informe .md a LaTeX UCUENCA
+│
+├── config/                             → Servidor MCP y despliegue
+│   ├── mcp_server.py                   → Servidor FastAPI que expone las funciones como API
+│   ├── render.yaml                     → Configuración de despliegue en Render
+│   ├── requirements.txt                → Dependencias Python del servidor
+│   ├── env.example                     → Variables de entorno de ejemplo
+│   ├── install_temaplate_library.bat   → Instalación global en Windows
+│   └── DEPLOYMENT_GUIDE.md            → Guía de despliegue del servidor MCP
+│
+└── templates/                          → Plantillas y guías de referencia
+    ├── guia_estilos_codigo.md          → Convenciones de código por lenguaje
+    ├── latex/                          → Plantilla LaTeX UCUENCA
+    │   ├── main.tex                    → Documento principal de referencia
+    │   ├── references.bib              → Plantilla de bibliografía BibTeX
+    │   ├── images/                     → Carpeta de imágenes (vacía)
+    │   └── Template/
+    │       ├── Template.tex            → Estilos, paquetes y cajas UCUENCA
+    │       ├── Portada.tex             → Portada institucional editable
+    │       └── ucuenca_logo.png        → Logo oficial UCUENCA
+    └── template_slides_HTML/           → Plantilla de presentaciones HTML
+        └── index.html
 ```
 
 ---
@@ -47,26 +60,17 @@ Formatos_repos/
 ### 1 · Crear un proyecto nuevo
 
 ```bash
-# Python project (main.py + docs/, src/data/, src/functions/, results/reports/, results/images/)
-python crear_proyecto.py my_analysis --type python
+# Proyecto Python (main.py + src/, results/, experiments/)
+python src/crear_proyecto.py mi_analisis
 
-# LaTeX UCUENCA project (Template/, images/, references.bib, main.tex)
-python crear_proyecto.py control_lab --type latex
+# Proyecto LaTeX UCUENCA (Template/, images/, references.bib, main.tex)
+python src/crear_proyecto.py practica1_control --tipo proyecto_latex
 
-# Julia project (main.jl + Project.toml + shared resource folders)
-python crear_proyecto.py pde_solver --type julia
+# En una ubicación específica
+python src/crear_proyecto.py mi_proyecto --base C:/Proyectos
 
-# Jupyter Notebook project (main.ipynb + shared resource folders)
-python crear_proyecto.py notebook_analysis --type notebook
-
-# MATLAB project (main.m + shared resource folders)
-python crear_proyecto.py signal_processing --type matlab
-
-# In a specific location
-python crear_proyecto.py my_project --type python --2route C:/Projects
-
-# List all available types
-python crear_proyecto.py --list_type
+# Ver todos los tipos disponibles
+python src/crear_proyecto.py --listar-tipos
 ```
 
 ### Instalacion global en Windows

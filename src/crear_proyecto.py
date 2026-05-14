@@ -53,7 +53,7 @@ from uuid import uuid4
 
 # Directorio donde viven las plantillas de cada tipo de proyecto.
 # Se ubica junto a este mismo script para portabilidad.
-DIR_TEMPLATES: Path = Path(__file__).parent / "templates"
+DIR_TEMPLATES: Path = Path(__file__).parent.parent / "templates"
 
 # Default project type
 TIPO_POR_DEFECTO: str = "python"
