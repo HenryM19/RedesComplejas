@@ -1,4 +1,4 @@
-# Formatos\_repos — Librería de Automatización de Proyectos
+# Templates\_Library — Librería de Automatización de Proyectos
 
 Colección de scripts Python para la creación, organización y documentación
 de proyectos académicos e investigativos. Elimina el trabajo repetitivo de
